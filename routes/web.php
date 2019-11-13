@@ -33,7 +33,7 @@ Route::get('/productos', function () {
 
 Route::get('/productos/show/{id}', function ($id) {
     return "Vista detalle producto " . $id;
-});
+})->where('id', '[0-9]+');
 
 Route::get('/productos/create', function () {
     return "Añadir producto";
@@ -41,4 +41,4 @@ Route::get('/productos/create', function () {
 
 Route::get('/productos/edit/{id}', function ($id) {
     return "Modificar producto " . $id;
-});
+})->where('id', '[0-9]+');
