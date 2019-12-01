@@ -1,7 +1,5 @@
-@extends('layouts.master')
-
+@extends('layouts.app')
 @section('content')
-
     <div class="row" style="margin-top:40px">
         <div class="offset-md-3 col-md-6">
             <div class="card">
@@ -9,10 +7,7 @@
                     Añadir producto
                 </div>
                 <div class="card-body" style="padding:30px">
-
-                    {{-- READY: Abrir el formulario e indicar el método POST --}}
-                    <form action="#" method="POST">
-                    {{-- READY: Protección contra CSRF --}}
+                    <form action="{{ url('productos/create') }}" method="POST">
                     @csrf
 
                     <div class="form-group">
@@ -21,19 +16,16 @@
                     </div>
 
                     <div class="form-group">
-                        {{-- READY: Completa el input --}}
                         <label for="title">Precio</label>
                         <input type="number" name="precio" id="precio" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        {{-- TODO: Completa el input --}}
                         <label for="title">Categoría</label>
                         <input type="text" name="categoria" id="categoria" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        {{-- TODO: Completa el input --}}
                         <label for="title">Imagen</label>
                         <input type="text" name="imagen" id="imagen" class="form-control">
                     </div>
@@ -48,13 +40,9 @@
                             Añadir producto
                         </button>
                     </div>
-
-                    {{-- TODO: Cerrar formulario --}}
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
-
 @stop

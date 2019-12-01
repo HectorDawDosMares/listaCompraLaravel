@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 
@@ -10,38 +10,35 @@
             </div>
             <div class="card-body" style="padding:30px">
 
-                {{-- READY: Abrir el formulario e indicar el método POST --}}
-                <form action="#" method="POST">
+                <form action="{{ url('productos/edit') }}" method="POST">
                     {{method_field('PUT')}}
-                    {{-- READY: Protección contra CSRF --}}
                     @csrf
+
+                    <input type="hidden" name="identificacion" value="{{ $producto->id }}">
 
                     <div class="form-group">
                         <label for="title">Nombre</label>
-                        <input type="text" name="nombre" id="nombre" class="form-control">
+                        <input type="text" name="nombre" id="nombre" class="form-control" value="{{ $producto->nombre }}">
                     </div>
 
                     <div class="form-group">
-                        {{-- READY: Completa el input --}}
                         <label for="title">Precio</label>
-                        <input type="number" name="precio" id="precio" class="form-control">
+                        <input type="number" name="precio" id="precio" class="form-control" value="{{ $producto->precio }}">
                     </div>
 
                     <div class="form-group">
-                        {{-- TODO: Completa el input --}}
                         <label for="title">Categoría</label>
-                        <input type="text" name="categoria" id="categoria" class="form-control">
+                        <input type="text" name="categoria" id="categoria" class="form-control" value="{{ $producto->categoria }}">
                     </div>
 
                     <div class="form-group">
-                        {{-- TODO: Completa el input --}}
                         <label for="title">Imagen</label>
-                        <input type="text" name="imagen" id="imagen" class="form-control">
+                        <input type="text" name="imagen" id="imagen" class="form-control" value="{{ $producto->imagen }}">
                     </div>
 
                     <div class="form-group">
                         <label for="synopsis">Descripcion</label>
-                        <textarea name="descripcion" id="descripcion" class="form-control" rows="3"></textarea>
+                        <textarea name="descripcion" id="descripcion" class="form-control" rows="3">{{ $producto->descripcion }}</textarea>
                     </div>
 
                     <div class="form-group text-center">
@@ -49,8 +46,6 @@
                             Modificar producto
                         </button>
                     </div>
-
-                    {{-- TODO: Cerrar formulario --}}
                 </form>
 
             </div>

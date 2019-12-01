@@ -15,18 +15,31 @@ Route::get('/', function () {
 
 Route::get('/', 'HomeController@getHome');
 
-Route::get('login', function () {
-    return view('auth.login');
+/*
+    Route::get('login', function () {
+        return view('auth.login');
+    });
+
+    Route::get('logout', function () {
+        return view('auth.logout');
+    });
+*/
+
+Route::group(['prefix' => 'productos'], function (){
+
+    Route::get('/', 'ProductoController@getIndex');
+
+    Route::group(['middleware' => 'auth'], function (){
+        Route::get('/show/{id}', 'ProductoController@getShow')->where('id', '[0-9]+');
+
+        Route::get('/create', 'ProductoController@getCreate');
+        Route::post('/create', 'ProductoController@postCreate');
+
+        Route::get('/edit/{id}', 'ProductoController@getEdit')->where('id', '[0-9]+');
+        Route::put('/edit', 'ProductoController@putEdit');
+    });
 });
 
-Route::get('logout', function () {
-    return view('auth.logout');
-});
+Auth::routes();
 
-Route::get('productos', 'ProductoController@getIndex');
-
-Route::get('productos/show/{id}', 'ProductoController@getShow')->where('id', '[0-9]+');
-
-Route::get('productos/create', 'ProductoController@getCreate');
-
-Route::get('productos/edit/{id}', 'ProductoController@getEdit')->where('id', '[0-9]+');
+Route::get('/home', 'HomeController@index')->name('home');
