@@ -11,12 +11,6 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 @guest
-                <li class="nav-item {{ Request::is('productos') && ! Request::is('productos/create')? 'active' : ''}}">
-                    <a class="nav-link" href="{{url('/productos')}}">
-                        <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
-                        Productos
-                    </a>
-                </li>
                 @else
                 <li class="nav-item {{ Request::is('productos') && ! Request::is('productos/create')? 'active' : ''}}">
                     <a class="nav-link" href="{{url('/productos')}}">

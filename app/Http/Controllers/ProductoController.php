@@ -34,7 +34,7 @@ class ProductoController extends Controller {
         return redirect(action('ProductoController@getIndex'));
     }
     public function putEdit(Request $request) {
-        $id = $request->identificacion;
+        $id = $request->id;
         $producto = Producto::findOrFail($id);
             $producto->nombre = $request->nombre;
             $producto->precio = $request->precio;

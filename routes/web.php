@@ -25,19 +25,17 @@ Route::get('/', 'HomeController@getHome');
     });
 */
 
-Route::group(['prefix' => 'productos'], function (){
+Route::group(['prefix' => 'productos','middleware' => 'auth'], function (){
 
     Route::get('/', 'ProductoController@getIndex');
+    Route::get('/show/{id}', 'ProductoController@getShow')->where('id', '[0-9]+');
 
-    Route::group(['middleware' => 'auth'], function (){
-        Route::get('/show/{id}', 'ProductoController@getShow')->where('id', '[0-9]+');
+    Route::get('/create', 'ProductoController@getCreate');
+    Route::post('/create', 'ProductoController@postCreate');
 
-        Route::get('/create', 'ProductoController@getCreate');
-        Route::post('/create', 'ProductoController@postCreate');
+    Route::get('/edit/{id}', 'ProductoController@getEdit')->where('id', '[0-9]+');
+    Route::put('/edit', 'ProductoController@putEdit');
 
-        Route::get('/edit/{id}', 'ProductoController@getEdit')->where('id', '[0-9]+');
-        Route::put('/edit', 'ProductoController@putEdit');
-    });
 });
 
 Auth::routes();

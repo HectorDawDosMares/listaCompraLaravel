@@ -14,7 +14,7 @@
                     {{method_field('PUT')}}
                     @csrf
 
-                    <input type="hidden" name="identificacion" value="{{ $producto->id }}">
+                    <input type="hidden" name="id" value="{{ $producto->id }}">
 
                     <div class="form-group">
                         <label for="title">Nombre</label>

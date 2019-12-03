@@ -35,15 +35,19 @@ class DatabaseSeeder extends Seeder
         User::truncate();
 
         $usuario = new User;
-        $usuario->name = 'Hector';
-        $usuario->email = 'hector@dosmares.com';
-        $usuario->password = bcrypt('hector');
+            $usuario->name = 'Hector';
+            $usuario->nombre = 'Héctor';
+            $usuario->apellidos = 'Ibáñez Domínguez';
+            $usuario->email = 'hector@dosmares.com';
+            $usuario->password = bcrypt('hector');
         $usuario->save();
 
         $usuario = new User;
-        $usuario->name = 'Maria';
-        $usuario->email = 'maria@dosmares.com';
-        $usuario->password = bcrypt('maria');
+            $usuario->name = 'Maria';
+            $usuario->nombre = 'María';
+            $usuario->apellidos = 'Garía Duarte';
+            $usuario->email = 'maria@dosmares.com';
+            $usuario->password = bcrypt('maria');
         $usuario->save();
 
     }
