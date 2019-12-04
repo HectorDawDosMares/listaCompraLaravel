@@ -7,7 +7,7 @@
                     Añadir producto
                 </div>
                 <div class="card-body" style="padding:30px">
-                    <form action="{{ url('productos/create') }}" method="POST">
+                    <form action="{{ url('productos/create') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group">
@@ -26,8 +26,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="title">Imagen</label>
-                        <input type="text" name="imagen" id="imagen" class="form-control">
+                        <label for="title">Seleccionar imagen:</label>
+                        <input type="file" name="imagen" id="imagen" class="form-control">
                     </div>
 
                     <div class="form-group">

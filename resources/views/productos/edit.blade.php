@@ -10,7 +10,7 @@
             </div>
             <div class="card-body" style="padding:30px">
 
-                <form action="{{ url('productos/edit') }}" method="POST">
+                <form action="{{ url('productos/edit') }}" method="POST" enctype="multipart/form-data">
                     {{method_field('PUT')}}
                     @csrf
 
@@ -32,8 +32,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="title">Imagen</label>
-                        <input type="text" name="imagen" id="imagen" class="form-control" value="{{ $producto->imagen }}">
+                        <div><img src="{{ asset('storage/' . $producto->imagen) }}"></div>
+                        <label for="title">Seleccionar imagen:</label>
+                        <input type="file" name="imagen" id="imagen" class="form-control">
                     </div>
 
                     <div class="form-group">

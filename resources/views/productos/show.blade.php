@@ -6,8 +6,7 @@
 
     <div class="col-sm-4">
 
-        {{-- READY: Imagen genérica de los productos --}}
-        <img src="https://picsum.photos/200/300/?random" style="height:200px"/>
+        <img src="{{ asset('storage/' . $producto->imagen) }}" style="height:200px"/>
 
     </div>
     <div class="col-sm-8">
