@@ -44,4 +44,12 @@ class ProductoController extends Controller {
         $producto->save();
         return redirect()->action('ProductoController@getShow',[$id]);
     }
+    public function changePendiente(Request $request) {
+        $producto = Producto::findOrFail($request->id);
+        $producto->pendiente = !$producto->pendiente;
+        $producto->save();
+
+        return redirect()->action('ProductoController@getShow', ['id' => $request->id]);
+    }
+
 }

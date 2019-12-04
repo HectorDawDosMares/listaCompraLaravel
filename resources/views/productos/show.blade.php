@@ -16,17 +16,22 @@
         <h1>Nombre: {{ $producto->nombre }}</h1>
         <h3>Categoría: {{ $producto->categoria }}</h3>
 
-        @if($producto->pendiente)
+        <form action="{{ action('ProductoController@changePendiente') }}" method="POST">
+            {{method_field('PUT')}}
+            @csrf
+            <input type="hidden" name="id" value="{{ $producto->id }}">
+
+            @if($producto->pendiente)
             <h4>Estado: Producto pendiente de compra</h4>
-            <button type="button" class="btn btn-primary">Comprar</button>
-        @else
+            <button type="submit" class="btn btn-danger">Comprar</button>
+            @else
             <h4>Estado: Producto actualmente comprado</h4>
-            <button type="button" class="btn btn-danger">Comprado</button>
-        @endif
-        <button type="button" class="btn btn-warning" onclick=window.location.href="{{ url('/productos/edit/' . $producto->id ) }}">Editar</button>
-        <button type="button" class="btn btn-light" onclick="window.location.href='http://listacompra.test'">Volver al listado</button>
+            <button type="submit" class="btn btn-primary">Comprado</button>
+            @endif
 
-
+            <button type="button" class="btn btn-warning" onclick=window.location.href="{{ url('/productos/edit/' . $producto->id ) }}">Editar</button>
+            <button type="button" class="btn btn-light" onclick="window.location.href='http://listacompra.test'">Volver al listado</button>
+        </form>
 
     </div>
 </div>

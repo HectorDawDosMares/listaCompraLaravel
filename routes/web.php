@@ -36,6 +36,7 @@ Route::group(['prefix' => 'productos','middleware' => 'auth'], function (){
     Route::get('/edit/{id}', 'ProductoController@getEdit')->where('id', '[0-9]+');
     Route::put('/edit', 'ProductoController@putEdit');
 
+    Route::put('/changePendiente', 'ProductoController@changePendiente');
 });
 
 Auth::routes();
