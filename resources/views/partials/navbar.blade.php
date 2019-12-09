@@ -18,6 +18,12 @@
                         Productos
                     </a>
                 </li>
+                <li class="nav-item {{ Request::is('productos') && ! Request::is('productos/create')? 'active' : ''}}">
+                    <a class="nav-link" href="{{url('/productos/categorias')}}">
+                        <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                        Categorias
+                    </a>
+                </li>
                 <li class="nav-item {{  Request::is('productos/create') ? 'active' : ''}}">
                     <a class="nav-link" href="{{url('/productos/create')}}">
                         <span>&#10010</span> Nuevo Producto

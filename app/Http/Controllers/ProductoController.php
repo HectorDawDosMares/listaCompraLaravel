@@ -9,9 +9,22 @@ use App\Producto;
 class ProductoController extends Controller {
     public function __construct() {
     }
-    public function getIndex() {
-        $productos = Producto::all();
-        return view('productos.index', array('arrayProductos'=>$productos));
+    public function getIndex($categoria = false)
+    {
+
+        if(!$categoria) {
+            $productos = Producto::all();
+            $rtn = view('productos.index', array('arrayProductos'=>$productos));
+        } else {
+            $productos = Producto::where('categoria', $categoria)->get();
+            if (!$productos->isEmpty()) {
+                $rtn = view('productos.index', array('arrayProductos'=>$productos));
+            } else {
+                $rtn = redirect(action('ProductoController@getIndex'));
+            }
+        }
+
+        return $rtn;
     }
     public function getShow($id) {
         $producto = Producto::findOrFail($id);
@@ -55,6 +68,10 @@ class ProductoController extends Controller {
         $producto->save();
 
         return redirect()->action('ProductoController@getShow', ['id' => $request->id]);
+    }
+    public function getCategorias() {
+        $categorias = Producto::select('categoria')->distinct('categoria')->get();
+        return view('productos.categorias', array('arrayCategorias'=>$categorias));
     }
 
 }
