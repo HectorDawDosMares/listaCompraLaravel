@@ -36,9 +36,10 @@ Route::group(['prefix' => 'productos','middleware' => 'auth'], function (){
     Route::put('/edit', 'ProductoController@putEdit');
 
     Route::put('/changePendiente', 'ProductoController@changePendiente');
+    Route::put('changeComprado', 'ProductoController@changeComprado');
 
     Route::get('/categorias', 'ProductoController@getCategorias');
-    
+
     Route::get('/{categoria?}', 'ProductoController@getIndex');
 });
 
