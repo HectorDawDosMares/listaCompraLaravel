@@ -1,5 +1,7 @@
 @extends('layouts.app')
+
 @section('content')
+@include('partials.flash-message')
     <div class="row" style="margin-top:40px">
         <div class="offset-md-3 col-md-6">
             <div class="card">
@@ -7,7 +9,7 @@
                     Añadir producto
                 </div>
                 <div class="card-body" style="padding:30px">
-                    <form action="{{ url('productos/create') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ action('ProductoController@store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group">
@@ -26,7 +28,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="title">Seleccionar imagen:</label>
+                        <label for="title">Seleccionar imagen:</label><br>
                         <input type="file" name="imagen" id="imagen" class="form-control">
                     </div>
 

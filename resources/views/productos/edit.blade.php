@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+@include('partials.flash-message')
 <div class="row" style="margin-top:40px">
     <div class="offset-md-3 col-md-6">
         <div class="card">
@@ -10,11 +10,9 @@
             </div>
             <div class="card-body" style="padding:30px">
 
-                <form action="{{ url('productos/edit') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ action( 'ProductoController@update', ['producto' => $producto] ) }}" method="POST" enctype="multipart/form-data">
                     {{method_field('PUT')}}
                     @csrf
-
-                    <input type="hidden" name="id" value="{{ $producto->id }}">
 
                     <div class="form-group">
                         <label for="title">Nombre</label>

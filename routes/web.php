@@ -15,34 +15,13 @@ Route::get('/', function () {
 
 Route::get('/', 'HomeController@getHome');
 
-/*
-    Route::get('login', function () {
-        return view('auth.login');
-    });
+Route::get('productos/categorias', 'ProductoController@getCategorias')->middleware('auth');
+Route::get('productos/categorias/{categoria?}', 'ProductoController@index')->middleware('auth');
 
-    Route::get('logout', function () {
-        return view('auth.logout');
-    });
-*/
+Route::put('productos/changeComprado/{producto}', 'ProductoController@changeComprado')->middleware('auth');
 
-Route::group(['prefix' => 'productos','middleware' => 'auth'], function (){
-
-    Route::get('/show/{id}', 'ProductoController@getShow')->where('id', '[0-9]+');
-
-    Route::get('/create', 'ProductoController@getCreate');
-    Route::post('/create', 'ProductoController@postCreate');
-
-    Route::get('/edit/{id}', 'ProductoController@getEdit')->where('id', '[0-9]+');
-    Route::put('/edit', 'ProductoController@putEdit');
-
-    Route::put('/changePendiente', 'ProductoController@changePendiente');
-    Route::put('changeComprado', 'ProductoController@changeComprado');
-
-    Route::get('/categorias', 'ProductoController@getCategorias');
-
-    Route::get('/{categoria?}', 'ProductoController@getIndex');
-});
-
-Auth::routes();
+Route::resource('productos', 'ProductoController')->middleware('auth');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();

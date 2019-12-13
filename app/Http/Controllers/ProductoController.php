@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Producto;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Producto;
-use App\User;
 
-class ProductoController extends Controller {
-    public function __construct() {
-    }
-    public function getIndex($categoria = false)
+class ProductoController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index($categoria = false)
     {
-
         if(!$categoria) {
             $productos = Producto::all();
             $rtn = view('productos.index', array('arrayProductos'=>$productos));
@@ -22,80 +25,121 @@ class ProductoController extends Controller {
             if (!$productos->isEmpty()) {
                 $rtn = view('productos.index', array('arrayProductos'=>$productos));
             } else {
-                $rtn = redirect(action('ProductoController@getIndex'));
+                $rtn = redirect(action('ProductoController@index'));
             }
         }
 
         return $rtn;
     }
-    public function getShow($id) {
-        $producto = Producto::findOrFail($id);
-        $comprado = $this->existeProductoUsuario($id);
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('productos.create');
+}
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $producto = new Producto;
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->categoria = $request->categoria;
+        if($request->exists('imagen')) {
+            $producto->imagen = Storage::disk('public')->putFile('imagens', $request->file('imagen'));
+        }
+        $producto->descripcion = $request->descripcion;
+        $producto->save();
+        return redirect(action('ProductoController@index'))
+            ->with('success','Producto creado correctamente!');;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Producto  $producto
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Producto $producto)
+    {
+        $comprado = $this->existeProductoUsuario($producto);
         return view('productos.show', ['producto' => $producto, 'comprado' => $comprado]);
     }
-    public function getCreate() {
-        return view('productos.create');
-    }
-    public function getEdit($id) {
-        $producto = Producto::findOrFail($id);
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Producto  $producto
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Producto $producto)
+    {
         return view('productos.edit', array('producto'=>$producto));
     }
-    public function postCreate(Request $request) {
-        $producto = new Producto;
-            $producto->nombre = $request->nombre;
-            $producto->precio = $request->precio;
-            $producto->categoria = $request->categoria;
-            if($request->exists('imagen')) {
-                $producto->imagen = Storage::disk('public')->putFile('imagens', $request->file('imagen'));
-            }
-            $producto->descripcion = $request->descripcion;
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Producto  $producto
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Producto $producto)
+    {
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->categoria = $request->categoria;
+        if($request->exists('imagen')) {
+            $producto->imagen = Storage::disk('public')->putFile('imagens', $request->file('imagen'));
+        }
+        $producto->descripcion = $request->descripcion;
         $producto->save();
-        return redirect(action('ProductoController@getIndex'));
+        return redirect()->action('ProductoController@show',['producto' => $producto])
+            ->with('success','Producto actualizado correctamente!');
     }
-    public function putEdit(Request $request) {
-        $id = $request->id;
-        $producto = Producto::findOrFail($id);
-            $producto->nombre = $request->nombre;
-            $producto->precio = $request->precio;
-            $producto->categoria = $request->categoria;
-            if($request->exists('imagen')) {
-                $producto->imagen = Storage::disk('public')->putFile('imagens', $request->file('imagen'));
-            }
-            $producto->descripcion = $request->descripcion;
-        $producto->save();
-        return redirect()->action('ProductoController@getShow',[$id]);
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Producto  $producto
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Producto $producto) {
+        $producto->delete();
+        Storage::disk('public')->delete($producto->imagen);
+        return redirect()->action('ProductoController@index')
+            ->with('success','Producto eliminado correctamente!');
+    }
+
+    public function changeComprado(Producto $producto) {
+        $userFila = User::findOrFail(Auth::id());
+
+        if($this->existeProductoUsuario($producto)) {
+            $producto->users()->detach($userFila);
+        } else {
+            $producto->users()->attach($userFila);
+        }
+
+        return redirect()->action('ProductoController@show', ['producto' => $producto]);
+    }
+
+    public function existeProductoUsuario($producto) {
+        $userFila = User::findOrFail(Auth::id());
+        return $producto->users->contains($userFila) ? true : false;
     }
 
     public function getCategorias() {
         $categorias = Producto::select('categoria')->distinct('categoria')->get();
-        return view('productos.categorias', array('arrayCategorias'=>$categorias));
+        return view('productos.categorias', ['arrayCategorias'=>$categorias]);
     }
-
-    public function changeComprado(Request $request) {
-        $productoFila = Producto::findOrFail($request->id);
-        $userFila = User::findOrFail(Auth::id());
-
-        if($this->existeProductoUsuario($request->id)) {
-            $productoFila->users()->detach($userFila);
-        } else {
-            $productoFila->users()->attach($userFila);
-        }
-
-        return redirect()->action('ProductoController@getShow', ['id' => $request->id]);
-    }
-
-    public function existeProductoUsuario($id){
-        $productoFila = Producto::findOrFail($id);
-        $userFila = User::findOrFail(Auth::id());
-        return $productoFila->users->contains($userFila) ? true : false;
-    }
-
-    /*public function changePendiente(Request $request) {
-        $producto = Producto::findOrFail($request->id);
-        $producto->pendiente = !$producto->pendiente;
-        $producto->save();
-
-        return redirect()->action('ProductoController@getShow', ['id' => $request->id]);
-    }*/
 
 }
