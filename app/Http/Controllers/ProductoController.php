@@ -72,9 +72,8 @@ class ProductoController extends Controller {
     }
 
     public function changeComprado(Request $request) {
-        $userId = Auth::id();
         $productoFila = Producto::findOrFail($request->id);
-        $userFila = User::findOrFail($userId);
+        $userFila = User::findOrFail(Auth::id());
 
         if($this->existeProductoUsuario($request->id)) {
             $productoFila->users()->detach($userFila);
